@@ -1,0 +1,81 @@
+server:
+  port: 10667
+  tomcat:
+    max-swallow-size: -1
+  compression:
+    enabled: true
+    min-response-size: 1024
+    mime-types: application/javascript,application/json,application/xml,text/html,text/xml,text/plain,text/css,image/*
+spring:
+  main:
+    allow-bean-definition-overriding: true
+  application: 
+    name: form
+  profiles:
+    active: ${SERVER_ENVIROMENT:local}
+  cloud:
+    nacos:
+      discovery:
+        namespace: ${REGISTER_NAMESPACE:public}
+        server-addr: ${REGISTER_HOST:127.0.0.1}:${REGISTER_PORT:8848}
+        username: ${REGISTER_USERNAME:}
+        password: ${REGISTER_PASSWORD:}
+        weight: ${DISCOVERY_WEIGHT:10}
+        ip: ${DISCOVERY_DOMAIN:}
+        metadata:
+          kind: http
+          version:
+          weight: ${DISCOVERY_WEIGHT:10}
+      config:
+        namespace: ${REGISTER_NAMESPACE:public}
+        server-addr: ${REGISTER_HOST:127.0.0.1}:${REGISTER_PORT:8848}
+        username: ${REGISTER_USERNAME:}
+        password: ${REGISTER_PASSWORD:}
+        file-extension: yml
+        extension-configs:
+          - dataId: ${spring.application.name}.${spring.cloud.nacos.config.file-extension}
+  
+hystrix:
+  threadpool:
+    default:
+      coreSize: 800
+      maxQueueSize: 2000
+      queueSizeRejectionThreshold: 2000
+  command:
+    default:
+      circuitBreaker:
+        enabled: false
+      execution:
+        isolation:
+          thread:
+            timeoutInMilliseconds: 15000
+feign:
+  hystrix:
+    enabled: true
+  client:
+    config:
+      default:
+        connectTimeout: 2000
+        readTimeout: 15000
+        
+logging:
+  file:
+    path: ${LOG_PATH:/data/logs/lesscode-form}
+
+springfox:
+  documentation:
+    swagger:
+      v2:
+        path: /form/v2/api-docs
+
+#备忘录的文件目录配置，prod暂时未上备忘录
+excel:
+  rootPath: /data/resources/form/excel/
+  localDomain: http://192.168.88.164:13010/form/excel/
+
+img:
+  rootPath: /data/resources/memo/img/
+  localDomain: http://192.168.88.164:13010/memo/img/
+
+pdf:
+  rootPath: /data/resources/memo/pdf/

@@ -1,0 +1,165 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>form-service</artifactId>
+    <packaging>jar</packaging>
+
+    <name>form-service</name>
+    <description>form-service</description>
+
+    <parent>
+    	<groupId>com.polaris.lesscode</groupId>
+        <artifactId>form</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <properties>
+     	<main.class>com.polaris.lesscode.form.FormApplication</main.class>
+     </properties>
+    
+    <dependencies>
+        <dependency>
+            <groupId>com.github.fge</groupId>
+            <artifactId>json-schema-validator</artifactId>
+            <version>2.2.6</version>
+        </dependency>
+
+        <!-- websocket -->
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-websocket</artifactId>
+        </dependency>
+
+        <!--富文本转pdf-->
+        <dependency>
+            <groupId>com.itextpdf</groupId>
+            <artifactId>itextpdf</artifactId>
+            <version>5.5.13</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.itextpdf.tool</groupId>
+            <artifactId>xmlworker</artifactId>
+            <version>5.5.13</version>
+        </dependency>
+
+        <!--word操作工具类-->
+        <dependency>
+            <groupId>cn.hutool</groupId>
+            <artifactId>hutool-all</artifactId>
+            <version>5.4.6</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.deepoove</groupId>
+            <artifactId>poi-tl</artifactId>
+            <version>1.6.0-beta1</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.jsoup</groupId>
+            <artifactId>jsoup</artifactId>
+            <version>1.11.3</version>
+        </dependency>
+
+        <dependency>
+	    	<groupId>com.polaris.lesscode</groupId>
+	        <artifactId>common</artifactId>
+            <version>1.4.0-SNAPSHOT</version>
+    	</dependency>
+        <dependency>
+    		<groupId>com.polaris.lesscode</groupId>
+	        <artifactId>form-api</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+    	</dependency>
+        <dependency>
+            <groupId>com.polaris.lesscode</groupId>
+            <artifactId>gotable-api</artifactId>
+            <version>1.0.0-SNAPSHOT</version>
+        </dependency>
+    	<dependency>
+    		<groupId>com.polaris.lesscode</groupId>
+	        <artifactId>app-api</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+    	</dependency>
+        <dependency>
+            <groupId>com.polaris.lesscode</groupId>
+            <artifactId>permission-api</artifactId>
+            <version>3.0.0-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.polaris.lesscode</groupId>
+            <artifactId>usercenter-api</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>io.minio</groupId>
+            <artifactId>minio</artifactId>
+            <version>8.0.3</version>
+        </dependency>
+        <dependency>
+            <groupId>com.alibaba</groupId>
+            <artifactId>easyexcel</artifactId>
+            <version>2.2.10</version>
+        </dependency>
+
+        <!-- 国际手机号验证 -->
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>geocoder</artifactId>
+            <version>2.164</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>libphonenumber</artifactId>
+            <version>8.12.28</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>prefixmapper</artifactId>
+            <version>2.164</version>
+        </dependency>
+        <dependency>
+            <groupId>com.googlecode.libphonenumber</groupId>
+            <artifactId>carrier</artifactId>
+            <version>1.154</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.jayway.jsonpath</groupId>
+            <artifactId>json-path</artifactId>
+            <version>2.5.0</version>
+        </dependency>
+
+        <dependency>
+            <groupId>com.polaris.lesscode</groupId>
+            <artifactId>msgsvc-api</artifactId>
+            <version>1.0.4-SNAPSHOT</version>
+        </dependency>
+
+    </dependencies>
+
+	<build>
+        <finalName>lesscode-form-service</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+            </plugin>
+            <plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-deploy-plugin</artifactId>
+		        <configuration>
+		            <skip>true</skip>
+		        </configuration>
+		    </plugin>
+        </plugins>
+    </build>
+</project>

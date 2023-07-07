@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.polaris.lesscode.form.mapper.RdStorageMapper">
+	
+	<update id="createTable">
+		CREATE TABLE `${database}`.`${table}` (
+		  `id` bigint NOT NULL,
+		  `data` json DEFAULT NULL,
+		  `creator` bigint NOT NULL DEFAULT '0',
+		  `create_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		  `updator` bigint NOT NULL DEFAULT '0',
+		  `update_time` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+		  `del_flag` tinyint NOT NULL DEFAULT '2',
+		  PRIMARY KEY (`id`),
+		  KEY `creator` (`creator`),
+		  KEY `create_time` (`create_time`)
+		) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_bin COMMENT='${database}:${table}';
+	</update>
+	
+	<update id="alterColumn">
+		<if test="adds != null and adds.size > 0">
+			<foreach item="column" collection="adds">
+		       <if test="column.isNormalIndex">
+		         ALTER TABLE `${database}`.`${table}` ADD COLUMN `${column.name}` ${column.type} GENERATED ALWAYS AS (json_extract(`data`,'$.${column.jsonPath}')) VIRTUAL;
+		       	 ALTER TABLE `${database}`.`${table}` ADD INDEX `${column.indexName}` (`${column.name}`);
+		       </if>
+		       <if test="column.isArrayIndex">
+		         ALTER TABLE `${database}`.`${table}` ADD INDEX `${column.indexName}` ( (CAST(`data`->'$.${column.jsonPath}' AS UNSIGNED ARRAY)) );
+		       </if>
+		    </foreach>
+		</if>
+		<if test="dels != null and dels.size > 0">
+			<foreach item="column" collection="dels">
+			   <if test="column.isNormalIndex">
+		          ALTER TABLE `${database}`.`${table}` DROP INDEX `${column.indexName}`;
+		          ALTER TABLE `${database}`.`${table}` DROP COLUMN `${column.name}`;
+		       </if>
+		       <if test="column.isArrayIndex">
+		          ALTER TABLE `${database}`.`${table}` DROP INDEX `${column.indexName}`;
+		       </if>
+		    </foreach>
+		</if>
+	</update>
+	
+	<insert id="insert">
+		INSERT INTO `${database}`.`${table}` (`id`, `data`) VALUES (#{value.id,jdbcType=BIGINT},#{value.data,jdbcType=VARCHAR});
+	</insert>
+	
+	<insert id="insertBatch">
+		INSERT INTO `${database}`.`${table}` (`id`, `data`) VALUES 
+		<foreach item="value" collection="values" separator="," close=";">
+			(#{value.id,jdbcType=BIGINT},#{value.data,jdbcType=VARCHAR})
+		</foreach>
+	</insert>
+	
+	<insert id="update">
+		UPDATE `${database}`.`${table}` SET `data` = #{value.data,jdbcType=VARCHAR} WHERE id = #{value.id,jdbcType=BIGINT};
+	</insert>
+</mapper>

@@ -1,0 +1,146 @@
+management:
+  endpoints:
+    web:
+      exposure:
+        include: metrics,httptrace,prometheus
+    metrics:
+      # 下面选项建议打开，以监控 http 请求的 P99/P95 等，具体的时间分布可以根据实际情况设置
+      distribution:
+        sla:
+          http:
+            server:
+              requests: 10ms,50ms,100ms,200ms,500ms,1s,5s
+      # 在 Prometheus 中添加特别的 Labels
+      tags:
+        # 必须加上对应的应用名，因为需要以应用的维度来查看对应的监控
+        application: lesscode-form
+
+lesscode:
+  datasource:
+    initial-size: 10
+    min-idle: 50
+    maxActive: 1000
+    maxWait: 60000
+    timeBetweenEvictionRunsMillis: 60000
+    minEvictableIdleTimeMillis: 300000
+    testWhileIdle: true
+    testOnBorrow: false
+    testOnReturn: false
+  
+spring:
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+  aop:
+    proxy-target-class: true
+  jpa:
+    open-in-view: false
+  autoconfigure:
+    exclude: com.alibaba.druid.spring.boot.autoconfigure.DruidDataSourceAutoConfigure
+  datasource:
+    druid:
+      stat-view-servlet:
+        enabled: true
+        loginUsername: admin
+        loginPassword: 123456
+        allow:
+      web-stat-filter:
+        enabled: true
+    dynamic:
+      druid: # 全局druid参数，绝大部分值和默认保持一致。(现已支持的参数如下,不清楚含义不要乱设置)
+        # 连接池的配置信息
+        # 初始化大小，最小，最大
+        initial-size: 5
+        min-idle: 5
+        maxActive: 20
+        # 配置获取连接等待超时的时间
+        maxWait: 60000
+        # 配置间隔多久才进行一次检测，检测需要关闭的空闲连接，单位是毫秒
+        timeBetweenEvictionRunsMillis: 60000
+        # 配置一个连接在池中最小生存的时间，单位是毫秒
+        minEvictableIdleTimeMillis: 300000
+        #validationQuery: SELECT 1 FROM DUAL
+        testWhileIdle: true
+        testOnBorrow: false
+        testOnReturn: false
+        # 打开PSCache，并且指定每个连接上PSCache的大小
+        poolPreparedStatements: true
+        maxPoolPreparedStatementPerConnectionSize: 20
+        # 配置监控统计拦截的filters，去掉后监控界面sql无法统计，'wall'用于防火墙
+        filters: stat,slf4j
+        # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
+        connectionProperties: druid.stat.mergeSql\=true;druid.stat.slowSqlMillis\=5000
+      datasource:
+        master:
+          url: jdbc:mysql://127.0.0.1:3306/lesscode-test?characterEncoding=UTF-8&useUnicode=true&useSSL=false&autoReconnect=true&zeroDateTimeBehavior=convertToNull&transformedBitIsBoolean=true&serverTimezone=Asia/Shanghai&allowMultiQueries=true&useAffectedRows=true
+          username:
+          password:
+          driver-class-name: com.mysql.cj.jdbc.Driver
+        # 多数据源配置
+  #redis 配置
+  redis:
+    database: 4
+    host: 127.0.0.1
+    lettuce:
+      pool:
+        max-active: 8   #最大连接数据库连接数,设 0 为没有限制
+        max-idle: 8     #最大等待连接中的数量,设 0 为没有限制
+        max-wait: -1ms  #最大建立连接等待时间。如果超过此时间将接到异常。设为-1表示无限制。
+        min-idle: 0     #最小等待连接中的数量,设 0 为没有限制
+      shutdown-timeout: 100ms
+    password: "root"
+    port: 26379
+  sleuth:
+    sampler:
+      probability: 1.0
+opentracing:
+  jaeger:
+    service-name: form-test
+    enabled: true
+    log-spans: true
+    const-sampler:
+      decision: true
+    udp-sender:
+      host: 127.0.0.1
+      port: 6831
+#mybatis plus 设置
+mybatis-plus:
+  mapper-locations: classpath*:mybatis/*Mapper.xml
+  global-config:
+    # 关闭MP3.0自带的banner
+    banner: false
+    db-config:
+      #主键类型  0:"数据库ID自增",1:"该类型为未设置主键类型", 2:"用户输入ID",3:"全局唯一ID (数字类型唯一ID)", 4:"全局唯一ID UUID",5:"字符串全局唯一ID (idWorker 的字符串表示)";
+      id-type: 3
+      # 默认数据库表下划线命名
+      table-underline: true
+  configuration:
+    # 这个配置会将执行的sql打印出来，在开发或测试的时候可以用
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    # 返回类型为Map,显示null对应的字段
+    call-setters-on-nulls: true
+#Mybatis输出sql日志
+logging:
+  #path: data/logs/personas-data-scv
+  level:
+    com.personas.data.mapper: DEBUG
+#enable swagger
+swagger:
+  enable: true
+  production: false
+  basic:
+    enable: false
+    username: admin
+    password: 123456
+
+#excel:
+#  rootPath: /data/resources/form/excel/
+#  localDomain: https://lesscoderestest.startable.cn/form/excel/
+#
+#img:
+#  rootPath: /data/resources/memo/img/
+#  localDomain: https://lesscoderestest.startable.cn/memo/img/
+#
+#pdf:
+#  rootPath: /data/resources/memo/pdf/

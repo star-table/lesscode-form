@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <artifactId>form-api</artifactId>
+    <packaging>jar</packaging>
+
+    <name>form-api</name>
+    <description>form-api</description>
+
+    <parent>
+    	<groupId>com.polaris.lesscode</groupId>
+        <artifactId>form</artifactId>
+        <version>3.0.0-SNAPSHOT</version>
+    </parent>
+    
+    <dependencies>
+    	<dependency>
+	    	<groupId>com.polaris.lesscode</groupId>
+	        <artifactId>common</artifactId>
+	        <scope>provided</scope>
+    	</dependency>
+    </dependencies>
+    
+    <distributionManagement>
+        <repository>
+            <id>bjx</id>
+            <url>http://nexus.startable.cn:8081/repository/maven-releases/</url>
+        </repository>
+        <snapshotRepository>
+			<id>bjx</id>
+			<name>internet snapshots release</name>
+			<url>http://nexus.startable.cn:8081/repository/maven-snapshots/</url>
+		</snapshotRepository>
+    </distributionManagement>
+    
+	<build>
+        <finalName>lesscode-form-api</finalName>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+            </plugin>
+        </plugins>
+    </build>
+</project>
